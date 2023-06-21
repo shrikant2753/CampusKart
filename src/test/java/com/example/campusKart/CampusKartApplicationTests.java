@@ -1,4 +1,4 @@
-package com.example.CampusKart;
+package com.example.campusKart;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

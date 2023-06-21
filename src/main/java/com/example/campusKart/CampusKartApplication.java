@@ -1,4 +1,4 @@
-package com.example.CampusKart;
+package com.example.campusKart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
