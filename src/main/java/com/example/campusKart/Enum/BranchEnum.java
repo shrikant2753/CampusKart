@@ -1,6 +1,6 @@
 package com.example.campusKart.Enum;
 
-public enum Branch {
+public enum BranchEnum {
     Biotech,
     Chemical,
     Civil,

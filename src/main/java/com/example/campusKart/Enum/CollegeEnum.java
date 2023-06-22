@@ -1,6 +1,6 @@
 package com.example.campusKart.Enum;
 
-public enum College {
+public enum CollegeEnum {
     SCOE,
     SKNCOE,
     NBNCOE
