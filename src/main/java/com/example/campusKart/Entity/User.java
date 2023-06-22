@@ -1,7 +1,9 @@
 package com.example.campusKart.Entity;
 
+import com.example.campusKart.Enum.Year;
 import lombok.*;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
@@ -34,10 +36,12 @@ public class User {
     private String password;
 
     @NonNull
-    private String collegeName;
+    @DBRef
+    private College collegeName;
 
-    private int year;
+    private Year year;
 
     @NonNull
-    private String branch;
+    @DBRef
+    private Branches branch;
 }
