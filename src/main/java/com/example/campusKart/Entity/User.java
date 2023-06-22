@@ -36,12 +36,10 @@ public class User {
     private String password;
 
     @NonNull
-    @DBRef
-    private College collegeName;
+    private String collegeName;
 
-    private Year year;
+    private int year;
 
     @NonNull
-    @DBRef
-    private Branch branch;
+    private String branch;
 }

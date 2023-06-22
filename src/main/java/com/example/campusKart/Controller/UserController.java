@@ -1,6 +1,7 @@
 package com.example.campusKart.Controller;
 
 import com.example.campusKart.EntryDTOs.UserEntryDto;
+import com.example.campusKart.Service.UserService;
 import com.example.campusKart.Service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,7 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private final UserServiceImpl userServiceImpl;
-
-    public UserController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
-    }
+    UserService userService;
 
 
     @PostMapping("/add")
@@ -34,7 +31,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.toString());
         }
         try{
-            String response = userServiceImpl.addUser(userEntryDto);
+            String response = userService.addUser(userEntryDto);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             String response = e.getMessage();
