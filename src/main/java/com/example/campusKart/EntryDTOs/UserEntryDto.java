@@ -1,5 +1,8 @@
 package com.example.campusKart.EntryDTOs;
 
+import com.example.campusKart.Entity.Branches;
+import com.example.campusKart.Entity.College;
+import com.example.campusKart.Enum.Year;
 import lombok.Data;
 
 @Data
@@ -9,7 +12,7 @@ public class UserEntryDto {
     private String email;
     private String mobile;
     private String password;
-    private String collegeName;
-    private int year;
-    private String branch;
+    private College collegeName;
+    private Year year;
+    private Branches branch;
 }
