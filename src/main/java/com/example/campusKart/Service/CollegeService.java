@@ -1,2 +1,5 @@
-package com.example.campusKart.Service;public interface CollegeService {
+package com.example.campusKart.Service;
+
+public interface CollegeService {
+    String addCollege(String collegeName);
 }
