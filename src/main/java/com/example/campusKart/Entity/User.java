@@ -43,5 +43,5 @@ public class User {
 
     @NonNull
     @DBRef
-    private Branches branch;
+    private Branch branch;
 }
