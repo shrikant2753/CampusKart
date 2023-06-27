@@ -1,10 +1,10 @@
-package com.example.campusKart.Service.impl;
+package com.example.campusKart.User.Service.impl;
 
-import com.example.campusKart.Converter.UserConverter;
-import com.example.campusKart.Entity.User;
-import com.example.campusKart.EntryDTOs.UserEntryDto;
-import com.example.campusKart.Repository.UserRepository;
-import com.example.campusKart.Service.UserService;
+import com.example.campusKart.User.Converter.UserConverter;
+import com.example.campusKart.User.Entity.User;
+import com.example.campusKart.User.EntryDTOs.UserEntryDto;
+import com.example.campusKart.User.Repository.UserRepository;
+import com.example.campusKart.User.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

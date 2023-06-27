@@ -1,8 +1,7 @@
-package com.example.campusKart.Controller;
+package com.example.campusKart.User.Controller;
 
-import com.example.campusKart.EntryDTOs.UserEntryDto;
-import com.example.campusKart.Service.UserService;
-import com.example.campusKart.Service.impl.UserServiceImpl;
+import com.example.campusKart.User.EntryDTOs.UserEntryDto;
+import com.example.campusKart.User.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

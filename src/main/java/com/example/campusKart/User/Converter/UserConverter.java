@@ -1,7 +1,7 @@
-package com.example.campusKart.Converter;
+package com.example.campusKart.User.Converter;
 
-import com.example.campusKart.Entity.User;
-import com.example.campusKart.EntryDTOs.UserEntryDto;
+import com.example.campusKart.User.Entity.User;
+import com.example.campusKart.User.EntryDTOs.UserEntryDto;
 
 public class UserConverter {
     public static User convertDtoToEntity(UserEntryDto userEntryDto){

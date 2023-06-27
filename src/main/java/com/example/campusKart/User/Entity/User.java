@@ -1,13 +1,10 @@
-package com.example.campusKart.Entity;
+package com.example.campusKart.User.Entity;
 
-import com.example.campusKart.Enum.Year;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.repository.Update;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;

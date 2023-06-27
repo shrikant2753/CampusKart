@@ -1,4 +1,4 @@
-package com.example.campusKart.Enum;
+package com.example.campusKart.User.Enum;
 
 public enum Year {
     first,

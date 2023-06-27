@@ -1,8 +1,6 @@
-package com.example.campusKart.Service;
+package com.example.campusKart.User.Service;
 
-import com.example.campusKart.EntryDTOs.UserEntryDto;
-
-import javax.validation.ValidationException;
+import com.example.campusKart.User.EntryDTOs.UserEntryDto;
 
 public interface UserService {
     String addUser(UserEntryDto userEntryDto) throws Exception;

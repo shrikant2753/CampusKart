@@ -1,6 +1,5 @@
-package com.example.campusKart.EntryDTOs;
+package com.example.campusKart.User.EntryDTOs;
 
-import com.example.campusKart.Enum.Year;
 import lombok.Data;
 
 @Data
