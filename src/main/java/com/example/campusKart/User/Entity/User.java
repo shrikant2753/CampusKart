@@ -2,14 +2,18 @@ package com.example.campusKart.Entity;
 
 import com.example.campusKart.Enum.Year;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.repository.Update;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Document(collation = "user")
 @Data
@@ -42,4 +46,10 @@ public class User {
 
     @NonNull
     private String branch;
+
+    @CreatedDate
+    private Date createdOn;
+
+    @LastModifiedDate
+    private Date updatedOn;
 }
