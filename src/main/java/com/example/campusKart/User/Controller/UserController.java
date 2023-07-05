@@ -1,6 +1,9 @@
 package com.example.campusKart.User.Controller;
 
 import com.example.campusKart.User.EntryDTOs.UserEntryDto;
+import com.example.campusKart.User.EntryDTOs.UserLoginDto;
+import com.example.campusKart.User.Payload.LoginResponse;
+import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
 import com.example.campusKart.User.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +34,7 @@ public class UserController {
         }
         try{
             String response = userService.addUser(userEntryDto);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
         catch(org.springframework.dao.DuplicateKeyException e){
             return new ResponseEntity<>("Email already exist, please try to login", HttpStatus.UNAUTHORIZED);
@@ -39,6 +42,20 @@ public class UserController {
         catch (Exception e) {
             String response = e.getMessage();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody UserLoginDto userLoginDto) throws Exception {
+        try{
+            UserLoginResponseDto userLoginResponseDto = userService.login(userLoginDto);
+            LoginResponse loginResponse = new LoginResponse("User login successfully", userLoginResponseDto);
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        }
+        catch(Exception e){
+            String response = e.getMessage();
+            LoginResponse loginResponse = new LoginResponse(response, null);
+            return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
     }
 }
