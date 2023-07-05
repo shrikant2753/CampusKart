@@ -32,7 +32,11 @@ public class UserController {
         try{
             String response = userService.addUser(userEntryDto);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (Exception e) {
+        }
+        catch(org.springframework.dao.DuplicateKeyException e){
+            return new ResponseEntity<>("Email already exist, please try to login", HttpStatus.UNAUTHORIZED);
+        }
+        catch (Exception e) {
             String response = e.getMessage();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
