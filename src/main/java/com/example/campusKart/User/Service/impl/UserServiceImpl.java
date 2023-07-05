@@ -3,7 +3,9 @@ package com.example.campusKart.User.Service.impl;
 import com.example.campusKart.User.Converter.UserConverter;
 import com.example.campusKart.User.Entity.User;
 import com.example.campusKart.User.EntryDTOs.UserEntryDto;
+import com.example.campusKart.User.EntryDTOs.UserLoginDto;
 import com.example.campusKart.User.Repository.UserRepository;
+import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
 import com.example.campusKart.User.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,5 +50,17 @@ public class UserServiceImpl implements UserService {
         User user = UserConverter.convertDtoToEntity(userEntryDto);
         userRepository.save(user);
         return "user created successfully";
+    }
+
+    public UserLoginResponseDto login(UserLoginDto userLoginDto) throws Exception {
+        User user = userRepository.findByEmail(userLoginDto.getEmail());
+        if(user==null){
+            throw new Exception("Enter a valid email address");
+        }
+        if(!user.getPassword().equals(userLoginDto.getPassword())){
+            throw new Exception("Incorrect password");
+        }
+        String objectId = user.get_id().toString();
+        return UserConverter.convertUserLoginDtoToUserResponse(user, objectId);
     }
 }
