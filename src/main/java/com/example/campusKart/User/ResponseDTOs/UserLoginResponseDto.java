@@ -2,7 +2,6 @@ package com.example.campusKart.User.ResponseDTOs;
 
 import lombok.Builder;
 import lombok.Data;
-import org.bson.types.ObjectId;
 
 @Data
 @Builder

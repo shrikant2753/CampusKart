@@ -2,9 +2,7 @@ package com.example.campusKart.User.Converter;
 
 import com.example.campusKart.User.Entity.User;
 import com.example.campusKart.User.EntryDTOs.UserEntryDto;
-import com.example.campusKart.User.EntryDTOs.UserLoginDto;
 import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
-import org.bson.types.ObjectId;
 
 public class UserConverter {
     public static User convertDtoToEntity(UserEntryDto userEntryDto){
