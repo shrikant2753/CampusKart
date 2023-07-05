@@ -1,7 +1,9 @@
 package com.example.campusKart.User.Entity;
 
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,13 +14,16 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Document(collation = "user")
+@Document(collection = "user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Validated
 public class User {
+    @Id
+    private ObjectId _id;
+
     @NotBlank(message = "First name is required")
     private String firstName;
     private String lastName;
