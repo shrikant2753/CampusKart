@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation="product")
+import java.util.ArrayList;
+
+@Document(collection="product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +32,6 @@ public class Product {
     private int relSemester;
     @NonNull
     private String description;
+
+    private ArrayList<String>imagePath;
 }
