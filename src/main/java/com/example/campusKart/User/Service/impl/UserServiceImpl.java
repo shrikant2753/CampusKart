@@ -22,17 +22,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String addUser(UserEntryDto userEntryDto) throws Exception {
-//        User existedUser = userRepository.findByEmail(userEntryDto.getEmail());
-//        if(existedUser!=null){
-//            throw new Exception("Email already exist");
-//        }
+
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern emailPattern = Pattern.compile(emailRegex);
+        Matcher emailMatch = emailPattern.matcher(userEntryDto.getEmail());
+        if(!emailMatch.matches()){
+            throw new Exception("Email is not valid");
+        }
+
+//        Mobile number pattern matcher
+        Pattern mob = Pattern.compile("[6-9][0-9]{9}");
+        Matcher mobMatch = mob.matcher(userEntryDto.getMobile());
+        if(!mobMatch.matches()){
+            throw new Exception("Mobile number is not valid");
+        }
         Pattern p = Pattern.compile("((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,20})");
         Matcher m= p.matcher(userEntryDto.getPassword());
         if(!m.matches()){
-            throw new Exception("Password contain min one small letter, one capital letter, one digit and one spacial character ");
+            throw new Exception("Password contain minimum one small letter, one capital letter, one digit and one spacial character ");
         }
         User user = UserConverter.convertDtoToEntity(userEntryDto);
         userRepository.save(user);
-        return user.toString();
+        return "user created successfully";
     }
 }
