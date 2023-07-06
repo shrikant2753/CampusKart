@@ -19,14 +19,15 @@ import java.util.ArrayList;
 public class Product {
     @Id
     private ObjectId _id;
+    @NonNull
     private ObjectId user_id;
     @NonNull
     private String type;
-    @NonNull
+
     private int quantity;
-    @NonNull
+
     private double costPrice;
-    @NonNull
+
     private double sellingPrice;
     @NonNull
     private String relDepartment;

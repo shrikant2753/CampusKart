@@ -40,14 +40,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String addProduct(ProductEntryDto productEntryDto) throws Exception {
 
-        double sellingPrice = productEntryDto.getSellingPrice();
-        if(sellingPrice < 0){
-            throw new Exception("Selling price should not be negative");
+//        double sellingPrice = productEntryDto.getSellingPrice();
+//        double costPrice = productEntryDto.getCostPrice();
+
+
+
+        if(productEntryDto.getQuantity()<1){
+            throw new Exception("Minimum quantity required for the product is 1");
         }
 
-        double costPrice = productEntryDto.getCostPrice();
-        if(costPrice < 0){
-            throw new Exception("Cost price should not be negative");
+        if(productEntryDto.getSellingPrice() <= 0){
+            throw new Exception("Selling price should be positive decimal value");
+        }
+
+        if(productEntryDto.getCostPrice() <= 0){
+            throw new Exception("Cost price should be positive decimal value");
         }
 
         Optional<User> optionalUser = userRepository.findById(productEntryDto.getUser_id());
@@ -62,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
             user.setProductList(productList);
             userRepository.save(user);
 
-            return product.toString();
+            return "Product added successfully";
         }
         throw new IllegalArgumentException("User not found with ID: " + productEntryDto.getUser_id());
     }

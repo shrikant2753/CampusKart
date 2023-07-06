@@ -27,8 +27,12 @@ public class ProductController {
     public ResponseEntity<String> addProduct(@RequestBody ProductEntryDto productEntryDto){
         try{
             String response = productService.addProduct(productEntryDto);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (Exception e) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (IllegalArgumentException e){
+            String response = e.getMessage();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
             String response = e.getMessage();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
