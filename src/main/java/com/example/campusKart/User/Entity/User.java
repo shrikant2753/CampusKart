@@ -1,5 +1,6 @@
 package com.example.campusKart.User.Entity;
 
+import com.example.campusKart.Product.Entity.Product;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,7 +13,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "user")
 @Data
@@ -54,4 +57,6 @@ public class User {
 
     @LastModifiedDate
     private Date updatedOn;
+
+    private List<ObjectId> productList = new ArrayList<>();
 }
