@@ -1,9 +1,11 @@
 package com.example.campusKart.Product.EntryDTOs;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
 
 @Data
 public class ProductEntryDto {
+    private ObjectId user_id;
     private String type;
     private int quantity;
     private double costPrice;

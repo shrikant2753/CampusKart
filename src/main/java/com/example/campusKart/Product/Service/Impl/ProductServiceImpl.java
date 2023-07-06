@@ -5,6 +5,8 @@ import com.example.campusKart.Product.Entity.Product;
 import com.example.campusKart.Product.EntryDTOs.ProductEntryDto;
 import com.example.campusKart.Product.Repository.ProductRepository;
 import com.example.campusKart.Product.Service.ProductService;
+import com.example.campusKart.User.Entity.User;
+import com.example.campusKart.User.Repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -19,12 +21,17 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -43,11 +50,21 @@ public class ProductServiceImpl implements ProductService {
             throw new Exception("Cost price should not be negative");
         }
 
-        Product product = ProductConvertor.convertDtoToProductEntity(productEntryDto);
-        ArrayList<String>l = new ArrayList<>();
-        product.setImagePath(l);
-        productRepository.save(product);
-        return product.toString();
+        Optional<User> optionalUser = userRepository.findById(productEntryDto.getUser_id());
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Product product = ProductConvertor.convertDtoToProductEntity(productEntryDto);
+            ArrayList<String> l = new ArrayList<>();
+            product.setImagePath(l);
+            Product savedProduct = productRepository.save(product);
+            List<ObjectId> productList = user.getProductList();
+            productList.add(savedProduct.get_id());
+            user.setProductList(productList);
+            userRepository.save(user);
+
+            return product.toString();
+        }
+        throw new IllegalArgumentException("User not found with ID: " + productEntryDto.getUser_id());
     }
 
     @Override

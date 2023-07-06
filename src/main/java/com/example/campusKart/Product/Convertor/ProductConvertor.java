@@ -7,6 +7,7 @@ public class ProductConvertor {
 
     public static Product convertDtoToProductEntity(ProductEntryDto productEntryDto){
         return Product.builder().
+                user_id(productEntryDto.getUser_id()).
                 type(productEntryDto.getType()).
                 quantity(productEntryDto.getQuantity()).
                 costPrice(productEntryDto.getCostPrice()).
