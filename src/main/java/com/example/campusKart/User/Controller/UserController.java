@@ -1,5 +1,6 @@
 package com.example.campusKart.User.Controller;
 
+import com.example.campusKart.User.EntryDTOs.UpdateUserInfoDto;
 import com.example.campusKart.User.EntryDTOs.UserEntryDto;
 import com.example.campusKart.User.EntryDTOs.UserLoginDto;
 import com.example.campusKart.User.Payload.LoginResponse;
@@ -57,5 +58,18 @@ public class UserController {
             LoginResponse loginResponse = new LoginResponse(response, null);
             return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping("/update-info")
+    public ResponseEntity<String> updateUserInfo(@RequestBody UpdateUserInfoDto updateUserInfoDto){
+       try{
+           String response = userService.updateUserInfo(updateUserInfoDto);
+           return new ResponseEntity<>(response, HttpStatus.OK);
+       }
+       catch (Exception e){
+           String response = e.getMessage();
+           return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+       }
+
     }
 }

@@ -2,11 +2,13 @@ package com.example.campusKart.User.Service.impl;
 
 import com.example.campusKart.User.Converter.UserConverter;
 import com.example.campusKart.User.Entity.User;
+import com.example.campusKart.User.EntryDTOs.UpdateUserInfoDto;
 import com.example.campusKart.User.EntryDTOs.UserEntryDto;
 import com.example.campusKart.User.EntryDTOs.UserLoginDto;
 import com.example.campusKart.User.Repository.UserRepository;
 import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
 import com.example.campusKart.User.Service.UserService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +64,29 @@ public class UserServiceImpl implements UserService {
         }
         String objectId = user.get_id().toString();
         return UserConverter.convertUserLoginDtoToUserResponse(user, objectId);
+    }
+
+    @SneakyThrows
+    @Override
+    public String updateUserInfo(UpdateUserInfoDto updateUserInfoDto) {
+        User user = userRepository.findByEmail(updateUserInfoDto.getEmail());
+        System.out.println(updateUserInfoDto.getEmail());
+        System.out.println(updateUserInfoDto.getFirstName());
+        System.out.println(updateUserInfoDto.getLastName());
+        if(user==null){
+            throw new Exception("User does not exist with this email " + updateUserInfoDto.getEmail());
+        }
+        if(updateUserInfoDto.getFirstName()!=null)
+            user.setFirstName(updateUserInfoDto.getFirstName());
+        if(updateUserInfoDto.getLastName()!=null)
+            user.setLastName(updateUserInfoDto.getLastName());
+        if(updateUserInfoDto.getCollegeName()!=null)
+            user.setCollegeName(updateUserInfoDto.getCollegeName());
+        if(updateUserInfoDto.getYear()!=0)
+            user.setYear(updateUserInfoDto.getYear());
+        if(updateUserInfoDto.getBranch()!=null)
+            user.setBranch(updateUserInfoDto.getBranch());
+        userRepository.save(user);
+        return "user info updated successfully";
     }
 }
