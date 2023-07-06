@@ -38,5 +38,5 @@ public class Product {
     @NonNull
     private String description;
 
-    private ArrayList<String>imagePath;
+    private ArrayList<String>imagePath = new ArrayList<>();
 }

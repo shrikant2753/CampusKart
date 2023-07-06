@@ -40,11 +40,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String addProduct(ProductEntryDto productEntryDto) throws Exception {
 
-//        double sellingPrice = productEntryDto.getSellingPrice();
-//        double costPrice = productEntryDto.getCostPrice();
-
-
-
         if(productEntryDto.getQuantity()<1){
             throw new Exception("Minimum quantity required for the product is 1");
         }
@@ -61,8 +56,8 @@ public class ProductServiceImpl implements ProductService {
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
             Product product = ProductConvertor.convertDtoToProductEntity(productEntryDto);
-            ArrayList<String> l = new ArrayList<>();
-            product.setImagePath(l);
+//            ArrayList<String> l = new ArrayList<>();
+//            product.setImagePath(l);
             Product savedProduct = productRepository.save(product);
             List<ObjectId> productList = user.getProductList();
             productList.add(savedProduct.get_id());
