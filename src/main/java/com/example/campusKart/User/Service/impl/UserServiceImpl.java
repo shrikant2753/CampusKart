@@ -70,9 +70,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateUserInfo(UpdateUserInfoDto updateUserInfoDto) {
         User user = userRepository.findByEmail(updateUserInfoDto.getEmail());
-        System.out.println(updateUserInfoDto.getEmail());
-        System.out.println(updateUserInfoDto.getFirstName());
-        System.out.println(updateUserInfoDto.getLastName());
         if(user==null){
             throw new Exception("User does not exist with this email " + updateUserInfoDto.getEmail());
         }
