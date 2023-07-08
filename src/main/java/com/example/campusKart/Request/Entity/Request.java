@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "Request")
+@Document(collection = "Request")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -16,4 +16,5 @@ public class Request {
     private ObjectId sentBy;
     private ObjectId sentTo;
     private boolean isAccepted;
+    private boolean isRejected;
 }
