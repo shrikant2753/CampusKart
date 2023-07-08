@@ -2,10 +2,7 @@ package com.example.campusKart.User.Service.impl;
 
 import com.example.campusKart.User.Converter.UserConverter;
 import com.example.campusKart.User.Entity.User;
-import com.example.campusKart.User.EntryDTOs.UpdateMobileDto;
-import com.example.campusKart.User.EntryDTOs.UpdateUserInfoDto;
-import com.example.campusKart.User.EntryDTOs.UserEntryDto;
-import com.example.campusKart.User.EntryDTOs.UserLoginDto;
+import com.example.campusKart.User.EntryDTOs.*;
 import com.example.campusKart.User.Repository.UserRepository;
 import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
 import com.example.campusKart.User.Service.UserService;
@@ -29,6 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String addUser(UserEntryDto userEntryDto) throws Exception {
 
+//        email validator
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
@@ -46,6 +44,8 @@ public class UserServiceImpl implements UserService {
         if(!mobMatch.matches()){
             throw new Exception("Mobile number is not valid");
         }
+
+//        password validator
         Pattern p = Pattern.compile("((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,20})");
         Matcher m= p.matcher(userEntryDto.getPassword());
         if(!m.matches()){
@@ -108,5 +108,30 @@ public class UserServiceImpl implements UserService {
         }
         throw new IllegalArgumentException("User does not exist");
 
+    }
+
+    @Override
+    public String updateEmail(UpdateEmailDto updateEmailDto) {
+        Optional<User>optionalUser = Optional.ofNullable(userRepository.findByEmail(updateEmailDto.getEmail()));
+
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+
+            //email validator
+            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                    "[a-zA-Z0-9_+&*-]+)*@" +
+                    "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                    "A-Z]{2,7}$";
+
+            Pattern emailPattern = Pattern.compile(emailRegex);
+            Matcher emailMatch = emailPattern.matcher(updateEmailDto.getEmail());
+            if(!emailMatch.matches()){
+                throw new IllegalArgumentException("Email is not valid");
+            }
+            user.setMobile(updateEmailDto.getNewEmail());
+            userRepository.save(user);
+            return "Mobile number updated Successfully";
+        }
+        throw new IllegalArgumentException("User does not exist");
     }
 }
