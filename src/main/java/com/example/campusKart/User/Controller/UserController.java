@@ -1,8 +1,6 @@
 package com.example.campusKart.User.Controller;
 
-import com.example.campusKart.User.EntryDTOs.UpdateUserInfoDto;
-import com.example.campusKart.User.EntryDTOs.UserEntryDto;
-import com.example.campusKart.User.EntryDTOs.UserLoginDto;
+import com.example.campusKart.User.EntryDTOs.*;
 import com.example.campusKart.User.Payload.LoginResponse;
 import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
 import com.example.campusKart.User.Service.UserService;
@@ -70,6 +68,29 @@ public class UserController {
            String response = e.getMessage();
            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
        }
+    }
 
+    @PutMapping("/update-mobile")
+    public ResponseEntity<String> updateMobile(@RequestBody UpdateMobileDto updateMobileDto){
+        try{
+            String response = userService.updateMobileNumber(updateMobileDto);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (Exception e){
+            String response = e.getMessage();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update-email")
+    public ResponseEntity<String> updateMobile(@RequestBody UpdateEmailDto updateEmailDto){
+        try{
+            String response = userService.updateEmail(updateEmailDto);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (Exception e){
+            String response = e.getMessage();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 }
