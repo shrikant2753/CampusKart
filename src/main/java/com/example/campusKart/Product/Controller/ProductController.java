@@ -1,6 +1,7 @@
 package com.example.campusKart.Product.Controller;
 
 import com.example.campusKart.Product.EntryDTOs.ProductEntryDto;
+import com.example.campusKart.Product.EntryDTOs.UpdateProductDto;
 import com.example.campusKart.Product.Payload.FileResponse;
 import com.example.campusKart.Product.Service.ProductService;
 import org.bson.types.ObjectId;
@@ -51,5 +52,17 @@ public class ProductController {
             throw new RuntimeException(e);
         }
         return new ResponseEntity<>(new FileResponse(fileName, "Image is uploaded successfully"), HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateProduct(@RequestBody UpdateProductDto updateProductDto){
+        try{
+            String response = productService.updateProduct(updateProductDto);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch(Exception e){
+            String response = e.getMessage();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.example.campusKart.Product.Service.Impl;
 import com.example.campusKart.Product.Convertor.ProductConvertor;
 import com.example.campusKart.Product.Entity.Product;
 import com.example.campusKart.Product.EntryDTOs.ProductEntryDto;
+import com.example.campusKart.Product.EntryDTOs.UpdateProductDto;
 import com.example.campusKart.Product.Repository.ProductRepository;
 import com.example.campusKart.Product.Service.ProductService;
 import com.example.campusKart.User.Entity.User;
@@ -108,5 +109,39 @@ public class ProductServiceImpl implements ProductService {
             throw new Exception("Failed to update product image path");
         }
         return name;
+    }
+
+    public String updateProduct(UpdateProductDto updateProductDto){
+        Optional<Product> optionalProduct = productRepository.findById(updateProductDto.getProduct_id());
+        if(optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            if(updateProductDto.getQuantity() > 1){
+                product.setQuantity(updateProductDto.getQuantity());
+            }
+            if(updateProductDto.getCostPrice()>0){
+                product.setCostPrice(updateProductDto.getCostPrice());
+            }
+            if(updateProductDto.getSellingPrice()>0){
+                product.setSellingPrice(updateProductDto.getSellingPrice());
+            }
+            if(updateProductDto.getType()!=null){
+                product.setType(updateProductDto.getType());
+            }
+            if(updateProductDto.getRelDepartment()!=null){
+                product.setRelDepartment(updateProductDto.getRelDepartment());
+            }
+            if(updateProductDto.getDescription()!=null){
+                product.setDescription(updateProductDto.getDescription());
+            }
+            if(updateProductDto.getRelSemester()>0 && updateProductDto.getRelSemester()<9){
+                product.setRelSemester(updateProductDto.getRelSemester());
+            }
+            if(updateProductDto.getRelYear()>0 && updateProductDto.getRelYear()<5){
+                product.setRelYear(updateProductDto.getRelYear());
+            }
+            productRepository.save(product);
+            return "product updated successfully";
+        }
+        throw new IllegalArgumentException("product not found ");
     }
 }
