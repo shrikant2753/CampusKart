@@ -2,6 +2,7 @@ package com.example.campusKart.User.Service.impl;
 
 import com.example.campusKart.User.Converter.UserConverter;
 import com.example.campusKart.User.Entity.User;
+import com.example.campusKart.User.EntryDTOs.UpdateMobileDto;
 import com.example.campusKart.User.EntryDTOs.UpdateUserInfoDto;
 import com.example.campusKart.User.EntryDTOs.UserEntryDto;
 import com.example.campusKart.User.EntryDTOs.UserLoginDto;
@@ -12,6 +13,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Email is not valid");
         }
 
-//        Mobile number pattern matcher
+//      Mobile number pattern matcher
         Pattern mob = Pattern.compile("[6-9][0-9]{9}");
         Matcher mobMatch = mob.matcher(userEntryDto.getMobile());
         if(!mobMatch.matches()){
@@ -85,5 +87,26 @@ public class UserServiceImpl implements UserService {
             user.setBranch(updateUserInfoDto.getBranch());
         userRepository.save(user);
         return "user info updated successfully";
+    }
+
+    @Override
+    public String updateMobileNumber(UpdateMobileDto updateMobileDto) {
+        Optional<User>optionalUser = Optional.ofNullable(userRepository.findByEmail(updateMobileDto.getEmail()));
+
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+
+//            Mobile number pattern matcher
+            Pattern mob = Pattern.compile("[6-9][0-9]{9}");
+            Matcher mobMatch = mob.matcher(updateMobileDto.getMobile());
+            if(!mobMatch.matches()){
+                throw new IllegalArgumentException("Mobile number is not valid");
+            }
+            user.setMobile(updateMobileDto.getMobile());
+            userRepository.save(user);
+            return "Mobile number updated Successfully";
+        }
+        throw new IllegalArgumentException("User does not exist");
+
     }
 }
