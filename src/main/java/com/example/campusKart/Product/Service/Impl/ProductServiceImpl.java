@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String uploadImage(String path, MultipartFile file, ObjectId productId) throws Exception {
+        // Check if the uploaded file is empty
+        if (file.isEmpty()) {
+            throw new Exception("Uploaded file is empty");
+        }
+
+        // Check if the uploaded file is an image
+        if (!isImageFile(file)) {
+            throw new Exception("Uploaded file is not a valid image");
+        }
+
         //file name
         String name = file.getOriginalFilename();
 
@@ -83,9 +94,9 @@ public class ProductServiceImpl implements ProductService {
         String filePath = path + File.separator + fileName;
 
         //create folder if not created
-        File f = new File(path);
-        if(!f.exists()){
-            f.mkdir();
+        Path imageFolder = Paths.get(path);
+        if (!Files.exists(imageFolder)) {
+            Files.createDirectories(imageFolder);
         }
 
         //file copy
@@ -94,10 +105,6 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId).get();
         ArrayList<String> imagePath = product.getImagePath();
         imagePath.add(filePath);
-//        product.setImagePath(imagePath);
-        for(String s : imagePath){
-            System.out.println(s);
-        }
 
         Query query = new Query(Criteria.where("_id").is(productId));
         Update updateDefinition = new Update().set("imagePath", imagePath);
@@ -109,6 +116,14 @@ public class ProductServiceImpl implements ProductService {
             throw new Exception("Failed to update product image path");
         }
         return name;
+    }
+
+    private boolean isImageFile(MultipartFile file) {
+        String contentType = file.getContentType();
+        if (contentType != null) {
+            return contentType.startsWith("image/");
+        }
+        return false;
     }
 
     public String updateProduct(UpdateProductDto updateProductDto){
