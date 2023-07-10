@@ -47,9 +47,9 @@ public class ProductController {
         }
         catch(IOException e){
             e.printStackTrace();
-            return new ResponseEntity<>(new FileResponse(null, "Image is not uploaded due to some error"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new FileResponse(null, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return new ResponseEntity<>(new FileResponse(null, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(new FileResponse(fileName, "Image is uploaded successfully"), HttpStatus.OK);
     }
