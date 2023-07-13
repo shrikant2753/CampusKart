@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
             }
             user.setMobile(updateEmailDto.getNewEmail());
             userRepository.save(user);
-            return "Mobile number updated Successfully";
+            return "Email updated Successfully";
         }
         throw new IllegalArgumentException("User does not exist");
     }
