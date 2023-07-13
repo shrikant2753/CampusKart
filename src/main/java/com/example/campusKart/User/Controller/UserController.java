@@ -83,7 +83,7 @@ public class UserController {
     }
 
     @PutMapping("/update-email")
-    public ResponseEntity<String> updateMobile(@RequestBody UpdateEmailDto updateEmailDto){
+    public ResponseEntity<String> updateEmail(@RequestBody UpdateEmailDto updateEmailDto){
         try{
             String response = userService.updateEmail(updateEmailDto);
             return new ResponseEntity<>(response, HttpStatus.OK);
