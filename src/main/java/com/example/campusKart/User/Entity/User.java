@@ -1,6 +1,5 @@
 package com.example.campusKart.User.Entity;
 
-import com.example.campusKart.Product.Entity.Product;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
@@ -59,4 +58,6 @@ public class User {
     private Date updatedOn;
 
     private List<ObjectId> productList = new ArrayList<>();
+
+    private List<ObjectId> requestList = new ArrayList<>();
 }
