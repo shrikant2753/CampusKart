@@ -104,7 +104,11 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepository.findById(productId).get();
         ArrayList<String> imagePath = product.getImagePath();
-        imagePath.add(filePath);
+        if(imagePath.size()<2)
+            imagePath.add(filePath);
+        else{
+            throw new Exception("Only two images can be uploaded");
+        }
 
         Query query = new Query(Criteria.where("_id").is(productId));
         Update updateDefinition = new Update().set("imagePath", imagePath);
