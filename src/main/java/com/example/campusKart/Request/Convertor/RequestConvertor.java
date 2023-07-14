@@ -8,8 +8,6 @@ public class RequestConvertor {
         return Request.builder().
                 sentBy(requestEntryDto.getSentBy()).
                 sentTo(requestEntryDto.getSentTo()).
-                isAccepted(requestEntryDto.isAccepted()).
-                isRejected(requestEntryDto.isRejected()).
                 build();
     }
 }

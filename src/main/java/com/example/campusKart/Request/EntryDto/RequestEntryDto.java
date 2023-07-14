@@ -4,7 +4,7 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 
 @Data
-public class SendRequestEntryDto {
+public class RequestEntryDto {
     private ObjectId sentBy;
     private ObjectId sentTo;
 }
