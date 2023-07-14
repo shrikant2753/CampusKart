@@ -13,10 +13,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -110,7 +107,6 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
-    @Override
     public String deleteRequest(ObjectId id) throws DatabaseException {
         try {
             Optional<Request> optional = requestRepository.findById(id);
@@ -120,33 +116,43 @@ public class RequestServiceImpl implements RequestService {
                 ObjectId sendTo = request.getSentTo();
                 ObjectId sendBy = request.getSentBy();
 
-                synchronized (request){
+                synchronized (request) {
                     requestRepository.deleteById(request.getId());
                 }
 
                 if (userRepository.existsById(sendBy) && userRepository.existsById(sendTo)) {
-                    User user = userRepository.findById(sendBy).get();
-                    List<ObjectId> l = user.getRequestList();
-                    l.remove(request.getId());
-                    user.setRequestList(l);
+                    User user = userRepository.findById(sendBy).orElseThrow(() -> new UserNotFoundException("User not found"));
+                    User user1 = userRepository.findById(sendTo).orElseThrow(() -> new UserNotFoundException("User not found"));
 
-                    User user1 = userRepository.findById(sendTo).get();
-                    List<ObjectId> l1 = user1.getRequestList();
-                    l1.remove(request.getId());
-                    user1.setRequestList(l1);
+                    synchronized (user) {
+                        List<ObjectId> l = new ArrayList<>(user.getRequestList());
+                        l.remove(request.getId());
+                        user.setRequestList(l);
+                        userRepository.save(user);
+                    }
 
-                    userRepository.saveAll(List.of(user, user1));
+                    synchronized (user1) {
+                        List<ObjectId> l1 = new ArrayList<>(user1.getRequestList());
+                        l1.remove(request.getId());
+                        user1.setRequestList(l1);
+                        userRepository.save(user1);
+                    }
+
+                    // Save both users using Arrays.asList()
+                    userRepository.saveAll(Arrays.asList(user, user1));
 
                     return "Request deleted successfully";
+                } else {
+                    throw new UserNotFoundException("User not found");
                 }
-                throw new UserNotFoundException("User not Found");
+            } else {
+                throw new UserNotFoundException("Request not found");
             }
-            throw new UserNotFoundException("Request is deleted already");
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw new DatabaseException("Database operations failed", e);
         }
     }
+
     @Override
     public List<Request> getSendRequest(ObjectId userId) throws DatabaseException {
         return getRequestListByUserAndStatus(userId, false, false);
