@@ -4,8 +4,11 @@ import com.example.campusKart.Product.Convertor.ProductConvertor;
 import com.example.campusKart.Product.Entity.Product;
 import com.example.campusKart.Product.EntryDTOs.ProductEntryDto;
 import com.example.campusKart.Product.EntryDTOs.UpdateProductDto;
+import com.example.campusKart.Product.Exception.ProductNotFoundException;
 import com.example.campusKart.Product.Repository.ProductRepository;
 import com.example.campusKart.Product.Service.ProductService;
+import com.example.campusKart.Request.Exception.DatabaseException;
+import com.example.campusKart.Request.Exception.UserNotFoundException;
 import com.example.campusKart.User.Entity.User;
 import com.example.campusKart.User.Repository.UserRepository;
 import org.bson.types.ObjectId;
@@ -163,4 +166,33 @@ public class ProductServiceImpl implements ProductService {
         }
         throw new IllegalArgumentException("product not found ");
     }
+
+    @Override
+    public String deleteProduct(ObjectId productId) throws ProductNotFoundException, UserNotFoundException, DatabaseException {
+        try {
+            Optional<Product> optionalProduct = productRepository.findById(productId);
+
+            Product product = optionalProduct.orElseThrow(() -> new ProductNotFoundException("Product not found"));
+            User user = userRepository.findById(product.getUser_id())
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+            synchronized (user) {
+                List<ObjectId> productList = new ArrayList<>(user.getProductList());
+                productList.remove(productId);
+                user.setProductList(productList);
+                userRepository.save(user);
+            }
+
+            synchronized (product) {
+                productRepository.deleteById(productId);
+            }
+
+            return "Product deleted successfully";
+        } catch (ProductNotFoundException | UserNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DatabaseException("Database operations failed", e);
+        }
+    }
+
 }
