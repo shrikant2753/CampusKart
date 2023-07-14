@@ -66,9 +66,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public String acceptRequest(ObjectId id) throws DatabaseException {
+    public String acceptRequest(ObjectId requestId) throws DatabaseException {
 
-        Optional<Request> optional = requestRepository.findById(id);
+        Optional<Request> optional = requestRepository.findById(requestId);
 
         try{
             if (optional.isPresent()) {
@@ -87,9 +87,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public String rejectRequest(ObjectId id) throws DatabaseException {
+    public String rejectRequest(ObjectId requestId) throws DatabaseException {
         try {
-            Optional<Request> optional = requestRepository.findById(id);
+            Optional<Request> optional = requestRepository.findById(requestId);
 
             if (optional.isPresent()) {
                 Request request = optional.get();
@@ -200,5 +200,4 @@ public class RequestServiceImpl implements RequestService {
         }
         return Collections.emptyList();
     }
-
 }
