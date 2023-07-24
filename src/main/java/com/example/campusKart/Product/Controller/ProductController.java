@@ -89,4 +89,16 @@ public class ProductController {
             return new ResponseEntity<>(response, HttpStatusCode.valueOf(400));
         }
     }
+
+    @DeleteMapping("delete-image")
+    public ResponseEntity<String> deleteImage(String filePath){
+        try{
+            String response  = productService.deleteImage(filePath);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (Exception e){
+            String response = e.getMessage();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

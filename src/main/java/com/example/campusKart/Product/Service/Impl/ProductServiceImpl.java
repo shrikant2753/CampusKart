@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -192,6 +193,21 @@ public class ProductServiceImpl implements ProductService {
             throw e;
         } catch (Exception e) {
             throw new DatabaseException("Database operations failed", e);
+        }
+    }
+
+    @Override
+    public String deleteImage(String filePath) throws IOException{
+        Path pathToDelete = Paths.get(filePath);
+        try {
+            boolean deleted = Files.deleteIfExists(pathToDelete);
+            if (deleted) {
+                return "File deleted successfully";
+            } else {
+                return "File not found or unable to delete";
+            }
+        } catch (IOException e) {
+            return "Failed to delete the file: " + e.getMessage();
         }
     }
 
