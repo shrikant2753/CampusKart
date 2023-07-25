@@ -197,11 +197,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String deleteImage(String filePath) throws IOException{
+    public String deleteImage(String path, String fileName, ObjectId productId) throws IOException{
+        String filePath = path + File.separator + fileName;
         Path pathToDelete = Paths.get(filePath);
         try {
             boolean deleted = Files.deleteIfExists(pathToDelete);
             if (deleted) {
+                Product product = productRepository.findById(productId).get();
+                ArrayList<String>imagePath = product.getImagePath();
+                imagePath.remove(filePath);
+                product.setImagePath(imagePath);
+                productRepository.save(product);
                 return "File deleted successfully";
             } else {
                 return "File not found or unable to delete";

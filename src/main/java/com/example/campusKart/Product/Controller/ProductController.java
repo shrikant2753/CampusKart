@@ -91,9 +91,10 @@ public class ProductController {
     }
 
     @DeleteMapping("delete-image")
-    public ResponseEntity<String> deleteImage(String filePath){
+    public ResponseEntity<String> deleteImage(@RequestParam String fileName, @RequestParam ObjectId productId){
+
         try{
-            String response  = productService.deleteImage(filePath);
+            String response  = productService.deleteImage(path, fileName, productId);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         catch (Exception e){
