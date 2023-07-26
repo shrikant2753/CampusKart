@@ -4,6 +4,7 @@ import com.example.campusKart.User.EntryDTOs.*;
 import com.example.campusKart.User.Payload.LoginResponse;
 import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
 import com.example.campusKart.User.Service.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,6 +92,28 @@ public class UserController {
         catch (Exception e){
             String response = e.getMessage();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/bookmark")
+    public ResponseEntity<String> bookmarkProduct(@RequestBody BookmarkDto bookmarkDto){
+        try{
+            String response = userService.bookmarkProduct(bookmarkDto);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/un-bookmark")
+    public ResponseEntity<String> unBookmarkProduct(@RequestBody BookmarkDto bookmarkDto){
+        try{
+            String response = userService.unBookmarkedProduct(bookmarkDto);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

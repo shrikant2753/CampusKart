@@ -60,4 +60,6 @@ public class User {
     private List<ObjectId> productList = new ArrayList<>();
 
     private List<ObjectId> requestList = new ArrayList<>();
+
+    private ArrayList<ObjectId> bookmarkedProduct = new ArrayList<>();
 }

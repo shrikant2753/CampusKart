@@ -1,5 +1,7 @@
 package com.example.campusKart.User.Service.impl;
 
+import com.example.campusKart.Product.Entity.Product;
+import com.example.campusKart.Product.Repository.ProductRepository;
 import com.example.campusKart.User.Converter.UserConverter;
 import com.example.campusKart.User.Entity.User;
 import com.example.campusKart.User.EntryDTOs.*;
@@ -7,9 +9,11 @@ import com.example.campusKart.User.Repository.UserRepository;
 import com.example.campusKart.User.ResponseDTOs.UserLoginResponseDto;
 import com.example.campusKart.User.Service.UserService;
 import lombok.SneakyThrows;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +23,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -133,5 +139,50 @@ public class UserServiceImpl implements UserService {
             return "Email updated Successfully";
         }
         throw new IllegalArgumentException("User does not exist");
+    }
+
+    @Override
+    public String bookmarkProduct(BookmarkDto bookmarkDto) {
+        Optional<User>optionalUser = userRepository.findById(bookmarkDto.getUserId());
+        Optional<Product>optionalProduct = productRepository.findById(bookmarkDto.getProductId());
+
+        if(optionalUser.isPresent() && optionalProduct.isPresent()){
+            Product product= optionalProduct.get();
+            User user = optionalUser.get();
+            ArrayList<ObjectId> bookmarkedProduct = user.getBookmarkedProduct();
+            if(bookmarkedProduct.contains(bookmarkDto.getProductId())){
+                return "product alredy in bookmark";
+            }
+            ArrayList<ObjectId> userBookmarked = product.getUserBookmarkedProduct();
+            synchronized (this){
+                bookmarkedProduct.add(bookmarkDto.getProductId());
+                userBookmarked.add(bookmarkDto.getUserId());
+                userRepository.save(user);
+                productRepository.save(product);
+            }
+            return "product bookmarked successfully";
+        }
+        throw new RuntimeException("product or user is missing");
+    }
+
+    @Override
+    public String unBookmarkedProduct(BookmarkDto bookmarkDto) {
+        Optional<User>optionalUser = userRepository.findById(bookmarkDto.getUserId());
+        Optional<Product>optionalProduct = productRepository.findById(bookmarkDto.getProductId());
+
+        if(optionalUser.isPresent() && optionalProduct.isPresent()){
+            Product product= optionalProduct.get();
+            User user = optionalUser.get();
+            ArrayList<ObjectId> bookmarkedProduct = user.getBookmarkedProduct();
+            ArrayList<ObjectId> userBookmarked = product.getUserBookmarkedProduct();
+            synchronized (this){
+                bookmarkedProduct.remove(bookmarkDto.getProductId());
+                userBookmarked.remove(bookmarkDto.getUserId());
+                userRepository.save(user);
+                productRepository.save(product);
+            }
+            return "product removed from bookmark";
+        }
+        throw new RuntimeException("product or user is missing");
     }
 }
