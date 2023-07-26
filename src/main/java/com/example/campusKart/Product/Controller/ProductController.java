@@ -94,7 +94,7 @@ public class ProductController {
     public ResponseEntity<String> deleteImage(@RequestParam String fileName, @RequestParam ObjectId productId){
 
         try{
-            String response  = productService.deleteImage(path, fileName, productId);
+            String response  = productService.deleteImage(fileName, productId);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         catch (Exception e){

@@ -17,5 +17,5 @@ public interface ProductService {
 
     String deleteProduct(ObjectId productId) throws ProductNotFoundException, UserNotFoundException, DatabaseException;
 
-    String deleteImage(String path, String fileName, ObjectId productId) throws IOException;
+    String deleteImage(String fileName, ObjectId productId) throws IOException;
 }
