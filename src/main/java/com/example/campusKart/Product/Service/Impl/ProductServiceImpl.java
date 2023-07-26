@@ -13,6 +13,7 @@ import com.example.campusKart.User.Entity.User;
 import com.example.campusKart.User.Repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Update;
@@ -33,6 +34,10 @@ import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    @Value("${project.image}")
+    private String path;
+
     @Autowired
     ProductRepository productRepository;
 
@@ -184,6 +189,13 @@ public class ProductServiceImpl implements ProductService {
                 userRepository.save(user);
             }
 
+            synchronized (this){
+                ArrayList<String> imagePath = product.getImagePath();
+                for(String filePath : imagePath){
+                    deleteImage(filePath);
+                }
+            }
+
             synchronized (product) {
                 productRepository.deleteById(productId);
             }
@@ -196,8 +208,21 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+
+    public String deleteImage(String fileName){
+        Path pathToDelete = Paths.get(fileName);
+        try {
+            Files.delete(pathToDelete);
+            return "File deleted successfully";
+        } catch (IOException e) {
+            return "Failed to delete the file: " + e.getMessage();
+        } catch (Exception e) {
+            return "An error occurred: " + e.getMessage();
+        }
+    }
+
     @Override
-    public String deleteImage(String path, String fileName, ObjectId productId) {
+    public String deleteImage(String fileName, ObjectId productId) {
         String filePath = path + File.separator + fileName;
         Path pathToDelete = Paths.get(filePath);
 
