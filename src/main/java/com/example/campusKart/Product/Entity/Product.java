@@ -39,4 +39,5 @@ public class Product {
     private String description;
 
     private ArrayList<String>imagePath = new ArrayList<>();
+    private ArrayList<ObjectId> userBookmarkedProduct = new ArrayList<>();
 }
